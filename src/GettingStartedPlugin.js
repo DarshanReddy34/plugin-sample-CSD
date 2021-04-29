@@ -1,6 +1,6 @@
 import React from 'react';
-import { VERSION, Tab } from '@twilio/flex-ui';
-import { FlexPlugin } from 'flex-plugin';
+import { VERSION, Tab, ModalPopup } from '@twilio/flex-ui';
+import { FlexPlugin } from 'flex-plugin'; 
 
 import CustomTaskListContainer from './components/CustomTaskList/CustomTaskList.Container';
 import reducers, { namespace } from './states';
@@ -23,13 +23,20 @@ export default class GettingStartedPlugin extends FlexPlugin {
    */
   init(flex, manager) {
 
+    // manager.strings.ChatWelcomeText = "Hi, Iam a custom welcome message";
+    // manager.strings.Today = 'Custom Today';
+    // manager.strings.Yesterday = 'Custom Yesterday';
+    // manager.strings.TypingIndicator = "{0} is typing ... ";
+    flex.MessagingCanvas.defaultProps.showWelcomeMessage = true;
+
+
     this.registerReducers(manager);
 
     const options = { sortOrder: -1 };
-    flex.AgentDesktopView
-      .Panel1
-      .Content
-      .add(<CustomTaskListContainer key="demo-component" />, options);
+    // flex.AgentDesktopView
+    //   .Panel1
+    //   .Content
+    //   .add(<CustomTaskListContainer key="demo-component" />, options);
 
       flex.CRMContainer.defaultProps.uriCallback = (task) => {
         let url = 'http://bing.com';
@@ -47,6 +54,69 @@ export default class GettingStartedPlugin extends FlexPlugin {
         }
         return url;
       }
+
+      /*
+      * Adds custom History Tab for TaskCanvasTabs
+      */ 
+      flex.TaskCanvasTabs.Content.add(
+        <Tab label="History" key="new-custom-tab">
+          <CustomChatHistoryList key="custom-chat-history-component" />
+        </Tab>
+      );
+
+      /*
+      * Adds custo history  list on top of MessageList
+      */
+      // flex.MessagingCanvas.MessageList.Content.add(
+      //   <CustomChatHistoryList key="custom-chat-history-component" />,
+      //   options
+      // );
+
+      // flex.TaskCanvasHeader.Content.remove("actions");
+
+      // flex.TaskCanvasHeader.Content.replace(
+      //   <CustomEndChatButton key="actions" />
+      // )
+
+      // flex.TaskCanvasHeader.defaultProps.titleTemplateCode = "Hi there";
+
+      // flex.TaskCanvasHeader.defaultProps.secondLineTemplateCode = "Offline";
+      
+      /*
+      * Overrites the End chat button functionality
+      * refer to https://www.twilio.com/docs/flex/developer/ui/actions#sending-a-message-after-a-task-is-completed
+      */
+      flex.Actions.replaceAction("WrapupTask", (payload, original) => {
+        // Only alter chat tasks:
+        if( payload.task.taskChannelUniqueName !== "chat" ) {
+          original(payload);
+        } else {
+          console.log('end chat', payload);
+          const channelSid = payload.task.attributes.channelSid;
+          alert(`Thanks for chatting. Your session is now closed. Please rate your feed back. Channel SID: ${channelSid}`)
+          // original(payload); // this line is used to end the chat
+        }
+      });
+
+      /*
+      * Overrites the Complete chat button functionality
+      */
+      flex.Actions.replaceAction("CompleteTask", (payload, original) => {
+        // Only alter chat tasks:
+        if( payload.task.taskChannelUniqueName !== "chat" ) {
+          original(payload);
+        } else {
+          console.log('complete chat', payload);
+          const channelSid = payload.task.attributes.channelSid;
+          alert(`Complete Chat Channel SID: ${channelSid}`)
+          // original(payload); // this line is used to complete the chat
+        } 
+      })
+
+      /*
+      * Remove Info Tab from TaskCanvasTab
+      */
+      flex.TaskCanvasTabs.Content.remove("info");
   }
 
   /**
