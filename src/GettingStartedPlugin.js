@@ -10,10 +10,21 @@ import CustomEndChatButton from "./components/CustomEndChatButton/CustomEndChatB
 const PLUGIN_NAME = "GettingStartedPlugin";
 
 export default class GettingStartedPlugin extends FlexPlugin {
-	serviceUsers = undefined;
+	conversationsList = undefined;
 
 	constructor() {
 		super(PLUGIN_NAME);
+	}
+
+	fetchConv() {
+		var headers = {
+			Authorization:
+				"Basic QUMzODc1NjFjNGI4OWUzNGY4ZWFjM2NjODVlNzlmOTIyMzozODAzNjdhOWMxOTI3OTYxYzRkZjA5ZWEyMzA2NjMyOQ==",
+		};
+		return fetch(
+			"https://conversations.twilio.com/v1/Services/IS1593227395fb41cbb594755ec12cbb04/Conversations",
+			{ headers: headers }
+		);
 	}
 
 	/**
@@ -25,153 +36,7 @@ export default class GettingStartedPlugin extends FlexPlugin {
 	 */
 	init(flex, manager) {
 		// fetch list of conversations
-		const conversationsList = [
-			{
-				unique_name: null,
-				members_count: 1,
-				date_updated: "2021-04-21T19:31:40Z",
-				friendly_name: "Flex WebChat",
-				created_by: "system",
-				account_sid: "AC387561c4b89e34f8eac3cc85e79f9223",
-				url:
-					"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH0268e8d97e984e4fa44ec8288b35f816",
-				date_created: "2021-04-21T19:26:44Z",
-				sid: "CH0268e8d97e984e4fa44ec8288b35f816",
-				attributes:
-					'{"pre_engagement_data":{"friendlyName":"Anonymous","uuid":"mKH81TVK0laEmRaA","location":"http://localhost:8081/"},"from":"Anonymous","channel_type":"web","status":"INACTIVE","long_lived":false}',
-				service_sid: "IS1593227395fb41cbb594755ec12cbb04",
-				type: "private",
-				messages_count: 1,
-				links: {
-					webhooks:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH0268e8d97e984e4fa44ec8288b35f816/Webhooks",
-					messages:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH0268e8d97e984e4fa44ec8288b35f816/Messages",
-					invites:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH0268e8d97e984e4fa44ec8288b35f816/Invites",
-					members:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH0268e8d97e984e4fa44ec8288b35f816/Members",
-					last_message:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH0268e8d97e984e4fa44ec8288b35f816/Messages/IM75890361e8cf401b847fa9e24e35b1b0",
-				},
-			},
-			{
-				unique_name: null,
-				members_count: 1,
-				date_updated: "2021-04-22T10:09:51Z",
-				friendly_name: "Flex WebChat",
-				created_by: "system",
-				account_sid: "AC387561c4b89e34f8eac3cc85e79f9223",
-				url:
-					"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH05484c3aba584f26a98d8931311ada50",
-				date_created: "2021-04-22T10:05:29Z",
-				sid: "CH05484c3aba584f26a98d8931311ada50",
-				attributes:
-					'{"pre_engagement_data":{"friendlyName":"Alex Abonn","accountType":1,"location":"http://localhost:8081/"},"from":"Alex Abonn","channel_type":"web","status":"INACTIVE","long_lived":false}',
-				service_sid: "IS1593227395fb41cbb594755ec12cbb04",
-				type: "private",
-				messages_count: 2,
-				links: {
-					webhooks:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH05484c3aba584f26a98d8931311ada50/Webhooks",
-					messages:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH05484c3aba584f26a98d8931311ada50/Messages",
-					invites:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH05484c3aba584f26a98d8931311ada50/Invites",
-					members:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH05484c3aba584f26a98d8931311ada50/Members",
-					last_message:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH05484c3aba584f26a98d8931311ada50/Messages/IM9ee4b8ad1ba54c3f9a8082417ab34e5a",
-				},
-			},
-			{
-				unique_name: null,
-				members_count: 1,
-				date_updated: "2021-04-22T08:54:23Z",
-				friendly_name: "Flex WebChat",
-				created_by: "system",
-				account_sid: "AC387561c4b89e34f8eac3cc85e79f9223",
-				url:
-					"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH061133acd2224fd399405b515c15b8e9",
-				date_created: "2021-04-22T08:25:53Z",
-				sid: "CH061133acd2224fd399405b515c15b8e9",
-				attributes:
-					'{"pre_engagement_data":{"friendlyName":"Jane Doe","accountType":2,"location":"http://localhost:8081/"},"from":"Jane Doe","channel_type":"web","status":"INACTIVE","long_lived":false}',
-				service_sid: "IS1593227395fb41cbb594755ec12cbb04",
-				type: "private",
-				messages_count: 1,
-				links: {
-					webhooks:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH061133acd2224fd399405b515c15b8e9/Webhooks",
-					messages:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH061133acd2224fd399405b515c15b8e9/Messages",
-					invites:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH061133acd2224fd399405b515c15b8e9/Invites",
-					members:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH061133acd2224fd399405b515c15b8e9/Members",
-					last_message:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH061133acd2224fd399405b515c15b8e9/Messages/IM9aa1b04a610b48a29ad385d046614e6a",
-				},
-			},
-			{
-				unique_name: null,
-				members_count: 1,
-				date_updated: "2021-04-23T11:40:26Z",
-				friendly_name: "Flex WebChat",
-				created_by: "system",
-				account_sid: "AC387561c4b89e34f8eac3cc85e79f9223",
-				url:
-					"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH11755f7580a1409a91c86ae2de51ffa4",
-				date_created: "2021-04-23T11:39:57Z",
-				sid: "CH11755f7580a1409a91c86ae2de51ffa4",
-				attributes:
-					'{"pre_engagement_data":{"friendlyName":"Alex Abonn","accountType":1,"location":"http://localhost:8081/"},"from":"Alex Abonn","channel_type":"web","status":"INACTIVE","long_lived":false}',
-				service_sid: "IS1593227395fb41cbb594755ec12cbb04",
-				type: "private",
-				messages_count: 1,
-				links: {
-					webhooks:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH11755f7580a1409a91c86ae2de51ffa4/Webhooks",
-					messages:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH11755f7580a1409a91c86ae2de51ffa4/Messages",
-					invites:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH11755f7580a1409a91c86ae2de51ffa4/Invites",
-					members:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH11755f7580a1409a91c86ae2de51ffa4/Members",
-					last_message:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH11755f7580a1409a91c86ae2de51ffa4/Messages/IMf04e17d428034680b87ff05300420fc9",
-				},
-			},
-			{
-				unique_name: null,
-				members_count: 1,
-				date_updated: "2021-04-22T10:09:58Z",
-				friendly_name: "Flex WebChat",
-				created_by: "system",
-				account_sid: "AC387561c4b89e34f8eac3cc85e79f9223",
-				url:
-					"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH12012365d1394c7ea2ff4d45df782aec",
-				date_created: "2021-04-22T08:26:39Z",
-				sid: "CH12012365d1394c7ea2ff4d45df782aec",
-				attributes:
-					'{"pre_engagement_data":{"friendlyName":"Alex Abonn","accountType":2,"location":"http://localhost:8081/"},"from":"Alex Abonn","channel_type":"web","status":"INACTIVE","long_lived":false}',
-				service_sid: "IS1593227395fb41cbb594755ec12cbb04",
-				type: "private",
-				messages_count: 1,
-				links: {
-					webhooks:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH12012365d1394c7ea2ff4d45df782aec/Webhooks",
-					messages:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH12012365d1394c7ea2ff4d45df782aec/Messages",
-					invites:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH12012365d1394c7ea2ff4d45df782aec/Invites",
-					members:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH12012365d1394c7ea2ff4d45df782aec/Members",
-					last_message:
-						"https://chat.twilio.com/v2/Services/IS1593227395fb41cbb594755ec12cbb04/Channels/CH12012365d1394c7ea2ff4d45df782aec/Messages/IMc3471d2c5a1b4ae889630a08481e15f0",
-				},
-			},
-		];
+		this.conversationsList = this.fetchConv();
 
 		// manager.strings.ChatWelcomeText = "Hi, Iam a custom welcome message";
 		// manager.strings.Today = 'Custom Today';
@@ -208,14 +73,18 @@ export default class GettingStartedPlugin extends FlexPlugin {
 		/*
 		 * Adds custom History Tab for TaskCanvasTabs
 		 */
-		flex.TaskCanvasTabs.Content.add(
-			<Tab label='History' key='new-custom-tab'>
-				<CustomChatHistoryList
-					key='custom-chat-history-component'
-					conversations={conversationsList}
-				/>
-			</Tab>
-		);
+		this.fetchConv().then((data) => {
+			// 	const conversationsList = await resp.json();
+			// console.log("conversationsList", conversationsList);
+			// return conversationsList.conversations;
+			const responseJSON = data.json();
+			this.conversationsList = responseJSON.conversations;
+			flex.TaskCanvasTabs.Content.add(
+				<Tab label='History' key='new-custom-tab'>
+					<CustomChatHistoryList key='custom-chat-history-component' />
+				</Tab>
+			);
+		});
 
 		/*
 		 * Adds custo history  list on top of MessageList
