@@ -1,0 +1,38 @@
+.conversation {
+	display: flex;
+	flex-direction: column;
+	padding: 10px 10px 0px 10px;
+	line-height: 1;
+
+	.header {
+		display: flex;
+		flex-direction: row;
+		line-height: 1;
+
+		.title {
+			font-size: 13px;
+			font-weight: bold;
+			flex-grow: 1;
+		}
+
+		.collapsed::before {
+			font-family: "Font Awesome 5 Free";
+			content: "\f054";
+			display: inline-block;
+			padding-right: 3px;
+			vertical-align: middle;
+			font-size: 12px;
+			font-weight: 900;
+		}
+
+		.expanded::before {
+			font-family: "Font Awesome 5 Free";
+			content: "\f078";
+			display: inline-block;
+			padding-right: 3px;
+			vertical-align: middle;
+			font-size: 12px;
+			font-weight: 900;
+		}
+	}
+}
