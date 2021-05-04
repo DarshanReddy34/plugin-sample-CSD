@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Moment from 'moment';
 
 class MessageList extends Component {
 
@@ -7,9 +8,6 @@ class MessageList extends Component {
         this.styles = {
             messageItemView: {
                 padding: '1.5rem',
-                width: '100%',
-                height: 'inherit',
-                overflowY: 'scroll'
             },
             authorStyle: {
                 name: {
@@ -19,9 +17,7 @@ class MessageList extends Component {
                 time: {
                     paddingLeft: '0.5rem',
                     float: 'right',
-                    fontSize: '10px',
-                    position: 'relative',
-                    top: '2px'
+                    fontSize: '10px'
                 }
             },
             messageFromOthers: {
@@ -57,10 +53,18 @@ class MessageList extends Component {
     render() {
         return (
             <div style={this.styles.messageItemView}>
-        {this.props.messages.map((msg, index) => (
-            <div key={index}>{msg}</div>
-        ))}
-        </div>
+                {this.props.messages.map((msg, index) => (
+                    <div key={index} style={msg.isFromMe ? this.styles.messageFromMe.messageItem : this.styles.messageFromOthers.messageItem}>
+                        <div style={msg.isFromMe ? this.styles.messageFromMe.messageText : this.styles.messageFromOthers.messageText}>
+                            <p style={{marginBottom: '0.5rem'}}>
+                                <span style={this.styles.authorStyle.name}>{msg.author}</span>
+                                {/* <span style={this.styles.authorStyle.time}>{Moment(msg.date_created).format('DD-MM-YYYY')}</span> */}
+                            </p>
+                            <p style={{marginBottom: '0.5rem'}}>{msg.body}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
         );
     }
 }
