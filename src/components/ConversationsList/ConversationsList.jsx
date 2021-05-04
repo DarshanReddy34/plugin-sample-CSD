@@ -9,7 +9,9 @@ const ConversationsList = (props) => {
         content: {
             display: 'flex',
             flexDirection: 'column',
-            flex: '1'
+            flex: '1',
+            height: 'inherit',
+            overflowY: 'scroll'
         }
     };
 

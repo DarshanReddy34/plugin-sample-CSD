@@ -36,7 +36,7 @@ export default class GettingStartedPlugin extends FlexPlugin {
 	 */
 	init(flex, manager) {
 		// fetch list of conversations
-		this.conversationsList = this.fetchConv();
+		// this.conversationsList = this.fetchConv();
 
 		// manager.strings.ChatWelcomeText = "Hi, Iam a custom welcome message";
 		// manager.strings.Today = 'Custom Today';
@@ -73,18 +73,11 @@ export default class GettingStartedPlugin extends FlexPlugin {
 		/*
 		 * Adds custom History Tab for TaskCanvasTabs
 		 */
-		this.fetchConv().then((data) => {
-			// 	const conversationsList = await resp.json();
-			// console.log("conversationsList", conversationsList);
-			// return conversationsList.conversations;
-			const responseJSON = data.json();
-			this.conversationsList = responseJSON.conversations;
-			flex.TaskCanvasTabs.Content.add(
-				<Tab label='History' key='new-custom-tab'>
-					<CustomChatHistoryList key='custom-chat-history-component' />
-				</Tab>
-			);
-		});
+		flex.TaskCanvasTabs.Content.add(
+			<Tab label='History' key='new-custom-tab'>
+				<CustomChatHistoryList key='custom-chat-history-component' />
+			</Tab>
+		);
 
 		/*
 		 * Adds custo history  list on top of MessageList

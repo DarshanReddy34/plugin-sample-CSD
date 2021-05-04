@@ -15,38 +15,31 @@ class ConversationItem extends Component {
           };
     }
 
-    // fetchMessages = () => {
-    //     const requestOptions = {
-    //         method: 'GET',
-    //         mode: 'cors',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //           Authorization: `Basic QUMzODc1NjFjNGI4OWUzNGY4ZWFjM2NjODVlNzlmOTIyMzpmMmE3MzQzZDYyNDM3NDY1NTQ1ZWU0YWMzNzM0MTRiOA==`, 
-    //         }
-    //     };
-    //     fetch(this.props.conversation.links.messages, requestOptions)
-    //     .then(res => res.json())
-    //     .then(
-    //       (result) => {
-    //           this.setState({
-    //               messages: result.messages
-    //           });
-    //           console.log(this.state.messages);
-    //       },
-    //       // Note: it's important to handle errors here
-    //       // instead of a catch() block so that we don't swallow
-    //       // exceptions from actual bugs in components.
-    //       (error) => {
-    //         this.setState({
-    //           isLoaded: true,
-    //           error
-    //         });
-    //       }
-    //     )
-    // }
+    fetchMessages = () => {
+        const requestOptions = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Basic ${btoa('AC387561c4b89e34f8eac3cc85e79f9223:f2a7343d62437465545ee4ac373414b8')}`, 
+            }
+        };
+        fetch(this.props.conversation.links.messages, requestOptions)
+        .then(res => res.json())
+        .then(
+          (result) => {
+              this.setState({
+                  messages: result.messages
+              });
+          },
+          (error) => {
+            // DO something
+          }
+        )
+    }
 
     toggleMessageInfo = () => {
-        // this.fetchMessages();
+        this.fetchMessages();
         this.setState({
             collapsed: !this.state.collapsed
         });
