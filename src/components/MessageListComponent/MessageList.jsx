@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Moment from 'moment';
 
 class MessageList extends Component {
 
@@ -50,12 +49,14 @@ class MessageList extends Component {
         };
     }
 
+    isFromMe = (msg) => msg.author.length < 32;
+
     render() {
         return (
             <div style={this.styles.messageItemView}>
                 {this.props.messages.map((msg, index) => (
-                    <div key={index} style={msg.isFromMe ? this.styles.messageFromMe.messageItem : this.styles.messageFromOthers.messageItem}>
-                        <div style={msg.isFromMe ? this.styles.messageFromMe.messageText : this.styles.messageFromOthers.messageText}>
+                    <div key={index} style={this.isFromMe(msg) ? this.styles.messageFromMe.messageItem : this.styles.messageFromOthers.messageItem}>
+                        <div style={this.isFromMe(msg) ? this.styles.messageFromMe.messageText : this.styles.messageFromOthers.messageText}>
                             <p style={{marginBottom: '0.5rem'}}>
                                 <span style={this.styles.authorStyle.name}>{msg.author}</span>
                                 {/* <span style={this.styles.authorStyle.time}>{Moment(msg.date_created).format('DD-MM-YYYY')}</span> */}

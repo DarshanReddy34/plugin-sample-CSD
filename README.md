@@ -9,13 +9,17 @@ Make sure you have [Node.js](https://nodejs.org) as well as [`npm`](https://npmj
 Afterwards, install the dependencies by running `npm install`:
 
 ```bash
-cd 
-
 # If you use npm
 npm install
 ```
 
 ## Development
+
+Go to your `src/utils` folder and create a copy of `TwAuthUtil.sample.js`, name it `TwAuthUtil.js` and update your `accountSid` and `authToken`
+
+Do not remove `TwAuthUtil.sample.js`.
+
+Do not add your `accountSid` and `authToken` to `TwAuthUtil.sample.js`.
 
 In order to develop locally, you can use the Webpack Dev Server by running:
 

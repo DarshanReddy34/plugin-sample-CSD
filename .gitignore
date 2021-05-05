@@ -62,5 +62,6 @@ typings/
 
 # Flex related ignore
 appConfig.js
+TwAuthUtil.js
 pluginsService.js
 build/

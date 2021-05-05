@@ -1,4 +1,3 @@
-import { flexStoreEnhancer } from '@twilio/flex-ui';
 import React from 'react';
 
 import ConversationItem from '../ConversationItem/ConversationItem';

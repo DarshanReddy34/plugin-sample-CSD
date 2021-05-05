@@ -4,6 +4,7 @@ import Moment from 'moment';
 import MessageList from '../MessageListComponent/MessageList';
 
 import './ConversationItem.scss';
+import TwAuthUtil from '../../utils/TwAuthUtil';
 
 class ConversationItem extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class ConversationItem extends Component {
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Basic ${btoa('AC387561c4b89e34f8eac3cc85e79f9223:f2a7343d62437465545ee4ac373414b8')}`, 
+              Authorization: TwAuthUtil.getAuthorizationKeyword(), 
             }
         };
         fetch(this.props.conversation.links.messages, requestOptions)
@@ -46,7 +47,6 @@ class ConversationItem extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <div className="conversation">
                 <div className="header" onClick={(e) => this.toggleMessageInfo()}>
